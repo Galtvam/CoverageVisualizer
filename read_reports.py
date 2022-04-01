@@ -7,10 +7,6 @@ def get_cover_file_names(directory, count):
     fileExt = r".cover"
     files = [_ for _ in os.listdir(directory) if _.endswith(fileExt)]
     
-    if len(files) == 0:
-        directory += "\\tests"
-        files = [_ for _ in os.listdir(directory) if _.endswith(fileExt)]
-    
     for file_name in files:
         if not file_name in count.keys():
             count[file_name] = {}
@@ -25,7 +21,7 @@ def read_cover_file(file_dir, file_name, dictionary):
 def find_executed_lines(lines, file_name, dictionary):
     for (i, l) in enumerate(lines):
         match = re.search(r"\d: ", l)
-        if type(match) == re.Match:
+        if (type(match) == re.Match) or (' import ' in l):
             dictionary[file_name][i+1] = True
 
 def count_statements(file):
