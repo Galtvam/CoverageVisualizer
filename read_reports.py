@@ -19,10 +19,23 @@ def read_cover_file(file_dir, file_name, dictionary):
         find_executed_lines(lines, file_name, dictionary)
     
 def find_executed_lines(lines, file_name, dictionary):
+    temp_def_index = 0
+    temp_def_executed = False
     for (i, l) in enumerate(lines):
-        match = re.search(r"\d: ", l)
-        if (type(match) == re.Match) or (' import ' in l):
+        if ' import ' in l:
             dictionary[file_name][i+1] = True
+        elif ' def' in l:
+            #Stores the index of the function definition
+            temp_def_index = i + 1
+            temp_def_executed = True
+        else:
+            match = re.search(r"\d: ", l)
+            if (type(match) == re.Match):
+                #Check if the def statement was executed
+                if temp_def_executed:
+                    dictionary[file_name][temp_def_index] = True
+                    temp_def_executed = False
+                dictionary[file_name][i+1] = True
 
 def count_statements(file):
     (pylint_stdout, pylint_stderr) = lint.py_run((file + ' -s n -r y --disable=all'), return_std=True)
