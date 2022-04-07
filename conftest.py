@@ -11,9 +11,6 @@ tracers = []
 test_suite_statements = []
 test_statements = {}
 
-def pytest_fixture_setup():
-    pass
-
 def pytest_pyfunc_call(pyfuncitem):
     test_function = pyfuncitem.obj
     
@@ -56,6 +53,3 @@ def pytest_sessionfinish(session, exitstatus):
     print('Total statements: ' + str(total_statements))
     print('Total executed statements: ' + str(total_executed_statements))
     print('Total Coverage: ' + str((total_executed_statements/total_statements)*100) + '%')
-
-
-    
