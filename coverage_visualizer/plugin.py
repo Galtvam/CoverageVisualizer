@@ -6,7 +6,7 @@ import functools
 from .read_reports import get_cover_file_names, count_executed_statements, count_statements
 
 APPLICATION_DIRECTORY = os.getcwd()
-DEFAULT_REPORTS_DIRECTORY = APPLICATION_DIRECTORY + "\\coverage_reports"
+DEFAULT_REPORTS_DIRECTORY = APPLICATION_DIRECTORY + "\\.coverage_reports"
 
 class CoverageVisualizerPlugin:
     _ignoredirs = [sys.prefix, sys.exec_prefix]
