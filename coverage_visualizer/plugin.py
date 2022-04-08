@@ -4,6 +4,7 @@ import trace
 import functools
 
 from .read_reports import get_cover_file_names, count_executed_statements, count_statements
+from .generate_visual_report import *
 
 APPLICATION_DIRECTORY = os.getcwd()
 DEFAULT_REPORTS_DIRECTORY = APPLICATION_DIRECTORY + "\\.coverage_reports"
@@ -26,7 +27,7 @@ class CoverageVisualizerPlugin:
         @functools.wraps(test_function)
         def tracer_wrapper(*args, **kwargs):
             tracer.runfunc(test_function, *args, **kwargs)
-        
+
         pyfuncitem.obj = tracer_wrapper
         if not str(pyfuncitem.fspath) in self.__test_files_statements.keys():
             self.__test_files_statements[str(pyfuncitem.fspath)] = count_statements(str(pyfuncitem.fspath))
@@ -45,12 +46,9 @@ class CoverageVisualizerPlugin:
         if results:
             results.write_results(coverdir=DEFAULT_REPORTS_DIRECTORY)
             get_cover_file_names(DEFAULT_REPORTS_DIRECTORY, self.__count_executed_statements)
-        
+            
         total_executed_statements = count_executed_statements(self.__count_executed_statements)
-        
-        print(' Total statements: ' + str(total_statements))
-        print(' Total executed statements: ' + str(total_executed_statements))
-        print(' Total Coverage: ' + str((total_executed_statements/total_statements)*100) + '%')
+        VisualReportGenerator.generate_visual_report(total_statements, total_executed_statements)
 
 
 def pytest_configure(config):

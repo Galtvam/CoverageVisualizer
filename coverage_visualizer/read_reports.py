@@ -19,14 +19,16 @@ def count_executed_statements(dictionary):
             total += len(dictionary[a])
     return total
 
-def get_cover_file_names(directory, count):
+def get_executed_statements(directory, count):
     fileExt = r".cover"
     files = [_ for _ in os.listdir(directory) if _.endswith(fileExt)]
     
     for file_name in files:
         if not file_name in count.keys():
             count[file_name] = {}
-        read_cover_file(str(directory), file_name, count)
+            
+        if not 'test' in file_name:
+            read_cover_file(str(directory), file_name, count)
     return count
 
 def read_cover_file(file_dir, file_name, dictionary):
