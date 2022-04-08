@@ -3,6 +3,22 @@ import re
 
 from pylint import epylint as lint
 
+EXECUTED_LINES_REGEX = r'\d: '
+PYLINT_ARGUMENTS = ' -s n -r y --disable=all'
+
+def count_statements(file):
+    (pylint_stdout, pylint_stderr) = lint.py_run((file + PYLINT_ARGUMENTS), return_std=True)
+    report_line = pylint_stdout.readlines()[4:5]
+    #Get the number of statements in the application
+    return [int(s) for s in report_line[0].split() if s.isdigit()][0]
+
+def count_executed_statements(dictionary):
+    total = 0
+    for a in dictionary.keys():
+        if not 'test' in a:
+            total += len(dictionary[a])
+    return total
+
 def get_cover_file_names(directory, count):
     fileExt = r".cover"
     files = [_ for _ in os.listdir(directory) if _.endswith(fileExt)]
@@ -29,28 +45,10 @@ def find_executed_lines(lines, file_name, dictionary):
             temp_def_index = i + 1
             temp_def_executed = True
         else:
-            match = re.search(r"\d: ", l)
+            match = re.search(EXECUTED_LINES_REGEX, l)
             if (type(match) == re.Match):
                 #Check if the def statement was executed
                 if temp_def_executed:
                     dictionary[file_name][temp_def_index] = True
                     temp_def_executed = False
                 dictionary[file_name][i+1] = True
-
-def count_statements(file):
-    (pylint_stdout, pylint_stderr) = lint.py_run((file + ' -s n -r y --disable=all'), return_std=True)
-    a = pylint_stdout.readlines()[4:5]
-    #Get the number of statements in the application
-    return [int(s) for s in a[0].split() if s.isdigit()][0]
-
-def count_executed_statements(dictionary):
-    total = 0
-    for a in dictionary.keys():
-        if not 'test' in a:
-            total += len(dictionary[a])
-    return total
-
-
-if __name__ == '__main__':
-    fileDir = os.getcwd()
-    get_cover_file_names(fileDir)
