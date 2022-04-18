@@ -3,7 +3,7 @@ import os
 import trace
 import functools
 
-from .read_reports import get_cover_file_names, count_executed_statements, count_statements
+from .read_reports import get_executed_statements, count_executed_statements, count_statements
 from .generate_visual_report import *
 
 APPLICATION_DIRECTORY = os.getcwd()
@@ -45,7 +45,7 @@ class CoverageVisualizerPlugin:
         
         if results:
             results.write_results(coverdir=DEFAULT_REPORTS_DIRECTORY)
-            get_cover_file_names(DEFAULT_REPORTS_DIRECTORY, self.__count_executed_statements)
+            get_executed_statements(DEFAULT_REPORTS_DIRECTORY, self.__count_executed_statements)
             
         total_executed_statements = count_executed_statements(self.__count_executed_statements)
         VisualReportGenerator.generate_visual_report(total_statements, total_executed_statements)
