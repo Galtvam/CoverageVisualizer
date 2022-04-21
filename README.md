@@ -1,4 +1,5 @@
 # CoverageVisualizer
+![license](https://img.shields.io/github/license/Galtvam/CoverageVisualizer) ![pyversion](https://img.shields.io/pypi/pyversions/pytest)
 
 ## Requirements
 
