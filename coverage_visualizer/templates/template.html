@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ptbr">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Coverage Visualizer</title>
+
+        <link href="styles.css" rel='stylesheet'>
+  
+    </head>
+    <body>
+        <div class="container">
+            <header>
+                <h1>Coverage Visualizer</h1>
+            </header>
+            <div class="coverage-container">
+                <div class="total-statements-container">
+                    <h2 class="title-label">Total Statements</h2>
+                    <span class="total-statements-value value">{{ total_statements }}</span>
+                </div>
+
+                <div class="executed-statements-container">
+                    <h2 class="title-label">Executed Statements</h2>
+                    <span class="executed-statements-value value">{{ executed_statements }}</span>
+                </div>
+                
+                <div class="total-coverage-container">
+                    <h2 class="title-label">Total Coverage</h2>
+                    <span class="total-coverage-value value">{{ total_coverage }}</span>
+                </div>
+                
+            </div>
+        </div>
+    </body>
+</html>
