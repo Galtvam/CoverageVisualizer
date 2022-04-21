@@ -6,31 +6,68 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Coverage Visualizer</title>
 
-        <link href="styles.css" rel='stylesheet'>
+        <link href="../styles/normalize.css" rel='stylesheet'>
+        <link href="../styles/main.css" rel='stylesheet'>
   
     </head>
     <body>
-        <div class="container">
+        <div class="main-container">
             <header>
                 <h1>Coverage Visualizer</h1>
+                <div class="menu">
+                    <span class="hotbar">Aqui é o hotbar</span>
+                </div>
             </header>
-            <div class="coverage-container">
-                <div class="total-statements-container">
-                    <h2 class="title-label">Total Statements</h2>
-                    <span class="total-statements-value value">5</span>
+            <div class="coverage-container" >
+                <div class="flex-2-col">
+                    <div class="total-statements-container info-container">
+                        <h2 class="title-label">Total Statements</h2>
+                        <p class="total-statements-value value">10</p>
+                    </div>
+
+                    <div class="executed-statements-container info-container">
+                        <h2 class="title-label">Executed Statements</h2>
+                        <p class="executed-statements-value value">10</p>
+                    </div>
+
+                </div>
+                <div class="flex-2-row">
+                    <div class="total-coverage-container info-container">
+                        <h2 class="title-label">Total Coverage</h2>
+                        <p class="total-coverage-value value">100.0%</p>
+                    </div>
+                    <canvas class="line-chart"></canvas>
                 </div>
 
-                <div class="executed-statements-container">
-                    <h2 class="title-label">Executed Statements</h2>
-                    <span class="executed-statements-value value">2</span>
-                </div>
-                
-                <div class="total-coverage-container">
-                    <h2 class="title-label">Total Coverage</h2>
-                    <span class="total-coverage-value value">40.0%</span>
-                </div>
-                
+                <footer>
+                    <p></p>
+                </footer>
+
             </div>
         </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+        <script>
+            var ctx = document.getElementsByClassName("line-chart");
+            var total = document.querySelector('.total-statements-value').innerHTML;
+            var executed = document.querySelector('.executed-statements-value').innerHTML;
+
+            var chartGraph = new Chart(ctx, {type: 'doughnut',
+                data : {
+                    labels: [
+                        'Executed Statements',
+                        'Not Executed Statements',
+                    ],
+                    datasets: [{
+                        label: 'Total Coverage',
+                        data: [executed,total - executed ],
+                        backgroundColor: [
+                        'rgb(54, 162, 235)',
+                        'rgb(255, 99, 132)'
+                       
+                        ],
+                        hoverOffset: 4
+                    }]
+                }});
+        </script>
     </body>
 </html>
