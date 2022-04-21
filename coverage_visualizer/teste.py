@@ -1,0 +1,3 @@
+from generate_visual_report import VisualReportGenerator
+
+VisualReportGenerator().generate_visual_report(total_statements =5, total_executed_statements=2)

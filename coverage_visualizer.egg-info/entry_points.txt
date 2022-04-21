@@ -1,0 +1,3 @@
+[pytest11]
+coverage_visualizer = coverage_visualizer.plugin
+
