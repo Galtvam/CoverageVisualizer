@@ -24,6 +24,7 @@ def count_executed_statements(dictionary, result):
             file_statements = len(dictionary[file])
             total += file_statements
             result[file]['executed_statements'] = file_statements
+            result[file]['coverage'] = (file_statements/result[file]['total_statements'])
     return total, result
 
 def get_executed_statements(directory, count, result):
