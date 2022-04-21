@@ -4,8 +4,6 @@ class VisualReportGenerator:
     
     @staticmethod
     def generate_visual_report(final_report):
-        total_statements = final_report['final_coverage']['total_stataments']
-        total_executed_statements = final_report['final_coverage']['executed_statements']
-        print(' Total statements: ' + str(total_statements))
-        print(' Total executed statements: ' + str(total_executed_statements))
-        print(' Total Coverage: ' + str((total_executed_statements/total_statements)*100) + '%')
+        print(' Total statements: ' + str(final_report['final_coverage']['total_stataments']))
+        print(' Total executed statements: ' + str(final_report['final_coverage']['executed_statements']))
+        print(' Total Coverage: ' + str(final_report['final_coverage']['coverage']*100) + '%')

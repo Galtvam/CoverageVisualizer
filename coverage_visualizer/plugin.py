@@ -52,7 +52,7 @@ class CoverageVisualizerPlugin:
         
         total_executed_statements, self.__coverage_result = count_executed_statements(self.__count_executed_statements, self.__coverage_result)
         
-        self.__coverage_result['final_coverage'] = {"total_stataments":total_statements, "executed_statements":total_executed_statements}
+        self.__coverage_result['final_coverage'] = {"total_stataments":total_statements, "executed_statements":total_executed_statements, "coverage":(total_executed_statements/total_statements)}
         VisualReportGenerator.generate_visual_report(self.__coverage_result)
 
 
