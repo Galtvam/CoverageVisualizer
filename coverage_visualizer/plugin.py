@@ -14,7 +14,7 @@ class CoverageVisualizerPlugin:
     
     def __init__(self):
         self.__tracers = []
-        self.__test_files_statements = {}
+        #self.__test_files_statements = {}
         self.__count_executed_statements = {}
         self.__coverage_result = {}
 
