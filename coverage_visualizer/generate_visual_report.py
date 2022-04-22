@@ -7,7 +7,7 @@ class VisualReportGenerator:
         pass
     
     @staticmethod
-    def generate_visual_report(total_statements, total_executed_statements):
+    def generate_visual_report(total_statements, total_executed_statements, dicionario):
         
         loader = FileSystemLoader(os.path.join(os.path.dirname(__file__), 'templates'))
         env = Environment(loader=loader)
@@ -17,7 +17,7 @@ class VisualReportGenerator:
         file = open("output/index.html", "w")
 
         render = template.render(total_statements= total_statements, executed_statements= total_executed_statements,
-                        total_coverage= str((total_executed_statements/total_statements)*100) + '%')
+                        total_coverage= str((total_executed_statements/total_statements)*100) + '%', dicionario=dicionario)
 
         file.write(render)
         file.close()

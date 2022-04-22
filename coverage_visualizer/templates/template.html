@@ -39,6 +39,22 @@
                     <canvas class="line-chart"></canvas>
                 </div>
 
+                <div class="report-details flex-2-row">
+                    <h2>Detailed Report</h2>
+                    <table class="content-table">
+                        <thead>
+                            <th>Archive name</th>
+                            <th>Executed statements</th>
+                            <th>Total statements</th>
+                            <th>Coverade</th>
+                        </thead>
+                        <tbody id="tbody">
+                            
+                        </tbody>
+                    </table>
+
+                </div>
+
                 <footer>
                     <p></p>
                 </footer>
@@ -47,6 +63,8 @@
         </div>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
         <script>
+            dicionario = {{ dicionario }};
+
             var ctx = document.getElementsByClassName("line-chart");
             var total = document.querySelector('.total-statements-value').innerHTML;
             var executed = document.querySelector('.executed-statements-value').innerHTML;
@@ -63,11 +81,34 @@
                         backgroundColor: [
                         'rgb(54, 162, 235)',
                         'rgb(255, 99, 132)'
-                       
+                    
                         ],
                         hoverOffset: 4
                     }]
                 }});
+
+
+            let tbody = document.getElementById('tbody')
+
+            for(let i in dicionario) {
+                let tr = tbody.insertRow();
+
+                let td_name = tr.insertCell();
+                let td_executed = tr.insertCell();
+                let td_total = tr.insertCell();
+                let td_coverage = tr.insertCell();
+
+                td_name.innerHTML = i
+                td_executed.innerHTML = dicionario[i].executed_statements;
+                td_total.innerHTML = dicionario[i].total_statements;
+                td_coverage.innerHTML = dicionario[i].coverage*100+"%";
+
+                td_executed.classList.add('center')
+                td_total.classList.add('center')
+                td_coverage.classList.add('center')
+
+            }
+            
         </script>
     </body>
 </html>

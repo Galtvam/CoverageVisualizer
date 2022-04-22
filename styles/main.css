@@ -9,7 +9,9 @@ html{
 body{
     font-size: 1.6rem;
 }
-
+.center{
+    text-align: center;
+}
 .main-container{
     display: flex;
     flex-direction: column;
@@ -17,11 +19,15 @@ body{
 
 header{
     box-sizing: border-box;
-    padding: 15px;
+    padding: 10px 25px 0 25px ;
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-direction: row;
+}
+
+header h1{
+    font-size:2.8rem;
 }
 
 .coverage-container{
@@ -39,6 +45,14 @@ header{
     text-align: center;
     font-size: 2.5rem;
     font-weight: bold;
+}
+
+.total-coverage-container h2{
+    font-size:2.2rem;
+}
+
+.total-coverage-container .value{
+    font-size: 3rem;
 }
 
 .flex-2-row{
@@ -64,4 +78,48 @@ header{
 .flex-2-col .info-container{
     margin:10px 40px;
 
+}
+
+.report-details{
+    margin: 32px 64px;
+}
+
+.report-details h2{
+    font-size:2rem;
+}
+.content-table{
+    border-collapse: collapse;
+    margin:25px 0;
+    font-size: 1.5rem;
+    min-width: 400px;
+    border-radius: 5px 5px 0 0;
+    /*
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    */
+}
+
+.content-table thead tr{
+    background-color: #0BA360;
+    color: #ffffff;
+    text-align: left;
+    font-weight: bold;
+}
+
+.content-table th,
+.content-table td{
+    font-weight: bold;
+    padding:12px 15px;
+}
+
+.content-table tbody tr{
+    border-bottom: 1px solid #dddddd;
+}
+
+.content-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.content-table tbody tr:last-of-type {
+    border-bottom: 2px solid #0BA360;
 }
