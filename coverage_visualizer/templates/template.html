@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ptbr">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Coverage Visualizer</title>
+
+        <link href="../styles/normalize.css" rel='stylesheet'>
+        <link href="../styles/main.css" rel='stylesheet'>
+        <script src="https://kit.fontawesome.com/050c362dbf.js" crossorigin="anonymous"></script>
+  
+    </head>
+    <body>
+        <div class="main-container">
+            <header>
+                <h1>Coverage Visualizer</h1>
+                <div class="menu">
+                    <nav>
+                        <a><i class="fa-solid fa-house"></i></a>
+                        <a><i class="fa-solid fa-circle-info"></i></a>
+                        <a><i class="fa-solid fa-gear"></i></a>
+                    </nav>
+
+                </div>
+            </header>
+            <div class="coverage-container" >
+                <div class="flex-2-col">
+                    <div class="total-statements-container info-container">
+                        <h2 class="title-label">Total Statements</h2>
+                        <p class="total-statements-value value">{{ total_statements }}</p>
+                    </div>
+
+                    <div class="executed-statements-container info-container">
+                        <h2 class="title-label">Executed Statements</h2>
+                        <p class="executed-statements-value value">{{ executed_statements }}</p>
+                    </div>
+
+                </div>
+                <div class="flex-2-row">
+                    <div class="total-coverage-container info-container">
+                        <h2 class="title-label">Total Coverage</h2>
+                        <p class="total-coverage-value value">{{ total_coverage }}</p>
+                    </div>
+                    <canvas class="line-chart"></canvas>
+                </div>
+
+                <div class="report-details flex-2-row">
+                    <h2>Detailed Report</h2>
+                    <table class="content-table">
+                        <thead>
+                            <th>Archive name</th>
+                            <th>Executed statements</th>
+                            <th>Total statements</th>
+                            <th>Coverade</th>
+                        </thead>
+                        <tbody id="tbody">
+                            
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <footer>
+                    <p></p>
+                </footer>
+
+            </div>
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+        <script>
+            dicionario = {{ dicionario }};
+
+            var ctx = document.getElementsByClassName("line-chart");
+            var total = document.querySelector('.total-statements-value').innerHTML;
+            var executed = document.querySelector('.executed-statements-value').innerHTML;
+
+            var chartGraph = new Chart(ctx, {type: 'doughnut',
+                data : {
+                    labels: [
+                        'Executed Statements',
+                        'Not Executed Statements',
+                    ],
+                    datasets: [{
+                        label: 'Total Coverage',
+                        data: [executed,total - executed ],
+                        backgroundColor: [
+                        'rgb(54, 162, 235)',
+                        'rgb(255, 99, 132)'
+                    
+                        ],
+                        hoverOffset: 4
+                    }]
+                }});
+
+
+            let tbody = document.getElementById('tbody')
+
+            for(let i in dicionario) {
+                let tr = tbody.insertRow();
+
+                let td_name = tr.insertCell();
+                let td_executed = tr.insertCell();
+                let td_total = tr.insertCell();
+                let td_coverage = tr.insertCell();
+
+                td_name.innerHTML = i
+                td_executed.innerHTML = dicionario[i].executed_statements;
+                td_total.innerHTML = dicionario[i].total_statements;
+                td_coverage.innerHTML = dicionario[i].coverage*100+"%";
+
+                td_executed.classList.add('center')
+                td_total.classList.add('center')
+                td_coverage.classList.add('center')
+
+            }
+            
+        </script>
+    </body>
+</html>
