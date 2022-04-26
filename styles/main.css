@@ -19,7 +19,7 @@ body{
 
 header{
     box-sizing: border-box;
-    padding: 10px 25px 0 25px ;
+    padding: 15px 25px 0 25px ;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -27,6 +27,9 @@ header{
 }
 
 header h1{
+    margin:0;
+    padding:0;
+    display: inline-block;
     font-size:2.8rem;
 }
 
@@ -85,7 +88,7 @@ header h1{
 }
 
 .report-details h2{
-    font-size:2rem;
+    font-size:2.2rem;
 }
 .content-table{
     border-collapse: collapse;
@@ -108,7 +111,6 @@ header h1{
 
 .content-table th,
 .content-table td{
-    font-weight: bold;
     padding:12px 15px;
 }
 
@@ -122,4 +124,15 @@ header h1{
 
 .content-table tbody tr:last-of-type {
     border-bottom: 2px solid #0BA360;
+}
+
+.menu nav a{
+    margin: 0 10px;
+    font-size:2rem;
+}
+
+.menu nav a:hover{
+    cursor: pointer;
+    color: rgba(0,0,0,0.3);
+}
 }
