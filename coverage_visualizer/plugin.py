@@ -64,7 +64,12 @@ class CoverageVisualizerPlugin:
 
 def pytest_configure(config):
     if config.getvalue('use_coverage_visualizer'):
-        config.pluginmanager.register(CoverageVisualizerPlugin(), 'coverage_visualizer_plugin')
+        if (config.getvalue('case_mode')):
+            plugin = CoverageVisualizerPlugin(USAGE_MODE.CASE)
+        else:
+            plugin = CoverageVisualizerPlugin(USAGE_MODE.PROJECT)
+            
+        config.pluginmanager.register(plugin, 'coverage_visualizer_plugin')
 
 
 def pytest_addoption(parser):
@@ -75,6 +80,13 @@ def pytest_addoption(parser):
         dest='use_coverage_visualizer',
         action='store_true',
         default=False,
-        help='Enable Coverage Visualzier plugin.'
+        help='Enable Coverage Visualizer plugin.'
+    )
+    
+    parser.addoption(
+        '--case-mode',
+        dest='case_mode',
+        default=False,
+        help='Enable Coverage Visualizer per test case and file.'
     )
 
