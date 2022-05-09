@@ -26,5 +26,9 @@ class VisualReportGenerator:
         file.close()
 
         path= os.path.abspath("output/index.html")
-        #webbrowser.open("file://"+path)
 
+    @staticmethod
+    def generate_visual_report_per_testfile(final_report):
+        '''
+        Generate a report divided by test file, with the coverage of each file per test case.
+        '''

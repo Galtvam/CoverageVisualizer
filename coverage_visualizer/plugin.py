@@ -1,64 +1,66 @@
-import sys
 import os
-import trace
 import functools
+from coverage import Coverage
+from enum import Enum, auto
 
-from .read_reports import get_executed_statements, count_executed_statements, count_statements
+from .read_reports import count_statements, count_collection_statements
 from .generate_visual_report import *
 
 APPLICATION_DIRECTORY = os.getcwd()
 DEFAULT_REPORTS_DIRECTORY = APPLICATION_DIRECTORY + "\\.coverage_reports"
 
+class USAGE_MODE(Enum):
+    PROJECT = auto()
+    CASE = auto()
+
 class CoverageVisualizerPlugin:
-    _ignoredirs = [sys.prefix, sys.exec_prefix]
     
-    def __init__(self):
-        self.__tracers = []
-        #self.__test_files_statements = {}
-        self.__count_executed_statements = {}
-        self.__coverage_result = {}
-
-    def pytest_pyfunc_call(self, pyfuncitem):
-        test_function = pyfuncitem.obj
+    def __init__(self, mode=USAGE_MODE.PROJECT):
+        self.__mode = mode
         
-        # Trace each test individually 
-        tracer = trace.Trace(trace=0, count=1, countfuncs=0, countcallers=0, ignoredirs=CoverageVisualizerPlugin._ignoredirs)
-        self.__tracers.append(tracer)
+        self.__coverage = None
+        self.__test_tracers = {}
 
-        @functools.wraps(test_function)
-        def tracer_wrapper(*args, **kwargs):
-            tracer.runfunc(test_function, *args, **kwargs)
-
-        pyfuncitem.obj = tracer_wrapper
-        #if not str(pyfuncitem.fspath) in self.__test_files_statements.keys():
-        #    executed_statements = count_statements(str(pyfuncitem.fspath))
-        #    self.__test_files_statements[str(pyfuncitem.fspath)] = executed_statements
-
+    def pytest_sessionstart(self, session):
+        if self.__mode == USAGE_MODE.PROJECT:
+            self.__coverage = Coverage()
+            self.__coverage.start()        
+    
+    def pytest_pyfunc_call(self, pyfuncitem):
+        if self.__mode == USAGE_MODE.CASE:
+            test_function = pyfuncitem.obj
+            
+            # Trace each test individually 
+            local_test_tracer = Coverage()
+            
+            file_name = str(pyfuncitem.fspath)
+            test_name = test_function.__name__ + "()"
+            
+            if not file_name in self.__test_tracers.keys():
+                self.__test_tracers[str(pyfuncitem.fspath)] = {}
+            self.__test_tracers[str(pyfuncitem.fspath)][test_name] = local_test_tracer
+            
+            
+            @functools.wraps(test_function)
+            def tracer_wrapper(*args, **kwargs):
+                local_test_tracer.start()
+                test_function(*args, **kwargs)
+                local_test_tracer.stop()
+                
+            pyfuncitem.obj = tracer_wrapper
+        
 
     def pytest_sessionfinish(self, session, exitstatus):
-        #total_statements = count_statements(APPLICATION_DIRECTORY)
-        #total_statements -= sum(self.__test_files_statements.values())
-    
-        for i, tracer in enumerate(self.__tracers):
-            if i == 0:
-                results = tracer.results()
-            else:
-                results.update(tracer.results())
+        if self.__mode == USAGE_MODE.PROJECT:
+            self.__coverage.stop()
+            self.__coverage.xml_report()
+            
+            coverage_data = count_statements()
+            VisualReportGenerator.generate_visual_report(coverage_data)
+        else:
+            coverage_collection_data = count_collection_statements(self.__test_tracers)
+            VisualReportGenerator.generate_visual_report_per_testfile(coverage_collection_data)
         
-        if results:
-            results.write_results(coverdir=DEFAULT_REPORTS_DIRECTORY)
-            get_executed_statements(DEFAULT_REPORTS_DIRECTORY, self.__count_executed_statements, self.__coverage_result)
-        total_statements = count_statements(APPLICATION_DIRECTORY, self.__coverage_result)
-        
-        total_executed_statements, self.__coverage_result = count_executed_statements(self.__count_executed_statements, self.__coverage_result)
-        
-        visualInput = {}
-        for key in self.__coverage_result.keys():
-                visualInput[key[:-6]] = self.__coverage_result[key]
-        
-        visualInput['final_coverage'] = {"total_statements":total_statements, "executed_statements":total_executed_statements, "coverage":(total_executed_statements/total_statements)}
-        VisualReportGenerator.generate_visual_report(visualInput)
-
 
 def pytest_configure(config):
     if config.getvalue('use_coverage_visualizer'):
