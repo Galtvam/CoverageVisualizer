@@ -52,8 +52,12 @@ class CoverageVisualizerPlugin:
         
         total_executed_statements, self.__coverage_result = count_executed_statements(self.__count_executed_statements, self.__coverage_result)
         
-        self.__coverage_result['final_coverage'] = {"total_stataments":total_statements, "executed_statements":total_executed_statements, "coverage":(total_executed_statements/total_statements)}
-        VisualReportGenerator.generate_visual_report(self.__coverage_result)
+        visualInput = {}
+        for key in self.__coverage_result.keys():
+                visualInput[key[:-6]] = self.__coverage_result[key]
+        
+        visualInput['final_coverage'] = {"total_statements":total_statements, "executed_statements":total_executed_statements, "coverage":(total_executed_statements/total_statements)}
+        VisualReportGenerator.generate_visual_report(visualInput)
 
 
 def pytest_configure(config):
