@@ -13,19 +13,19 @@
     </head>
     <body>
         <div class="main-container">
-            <header>
-                <h1>Coverage Visualizer</h1>
+            <!-- <header>
+                <h1 id="top">Coverage Visualizer</h1>
                 <div class="menu">
                     <nav>
-                        <a><i class="fa-solid fa-house"></i></a>
-                        <a><i class="fa-solid fa-circle-info"></i></a>
+                        <a href="#"><i class="fa-solid fa-house"></i></a>
+                        <a href="#details_section"><i class="fa-solid fa-circle-info"></i></a>
                         <a><i class="fa-solid fa-gear"></i></a>
                     </nav>
 
                 </div>
-            </header>
+            </header> -->
             <div class="coverage-container" >
-                <div class="flex-2-col">
+                <!-- <div class="flex-2-col">
                     <div class="total-statements-container info-container">
                         <h2 class="title-label">Total Statements</h2>
                         <p class="total-statements-value value">{{ total_statements }}</p>
@@ -43,78 +43,157 @@
                         <p class="total-coverage-value value">{{ total_coverage }}</p>
                     </div>
                     <canvas class="line-chart"></canvas>
-                </div>
+                </div> -->
 
                 <div class="report-details flex-2-row">
-                    <h2>Detailed Report</h2>
-                    <table class="content-table">
+                    <h2 id="details_section">Detailed Report</h2>
+                    <table class="content-table table-sortable">
                         <thead>
+                            <th>Test file name</th>
+                        </thead>
+                        <tbody id="tbody_1">
+                            <thead>
+                                <th>Test cases</th>
+                            </thead>
+                            <tbody id="tbody_2">
+                                <thead>
+                                    <th>Tested file names</th>
+                                    <th class="th-executed">Executed statements</th>
+                                    <th class="th-total">Total statements</th>
+                                    <th class="th-coverage">Coverage</th>
+                                </thead>
+                                <tbody id="tbody_3">
+
+                                </tbody>
+                            </tbody>
+                        </tbody>
+                        
+                        
+                        
+                        
+                        <!-- <thead>
                             <th>Archive name</th>
-                            <th>Executed statements</th>
-                            <th>Total statements</th>
-                            <th>Coverage</th>
+                            <th class="th-executed">Executed statements</th>
+                            <th class="th-total">Total statements</th>
+                            <th class="th-coverage">Coverage</th>
                         </thead>
                         <tbody id="tbody">
                             
-                        </tbody>
+                        </tbody> -->
                     </table>
-
+                
                 </div>
 
                 <footer>
                     <p></p>
                 </footer>
+                
+                <!-- <div id="modal" class="modal-container">
+                    <div class="modal">
+                        <div class="modal-header">
+                            <div class="file_image">
+                                <img src="../assets/file_image.png" alt="File image">
+                            </div>
+                            <h2 id="modal-file-name">Nome_do_arquivo.py</h2>
+                        </div>
+                        <button id ="modal-close" class="modal-close">X</button>
+
+                        <div class="modal-total-statements-container modal-info-container">
+                            <div class="modal-total-statements-title modal-title">Total Statements</div>
+                            <div class="modal-total-statements-value modal-value">10</div>
+                        </div>
+
+                        <div class="modal-executed-statements-container modal-info-container">
+                            <div class="modal-executed-statements-title modal-title">Executed Statements</div>
+                            <div class="modal-executed-statements-value modal-value">7</div>
+                        </div>
+
+                        <div class="modal-coverage-container modal-info-container">
+                            <div class="modal-coverage-title modal-title">Coverage</div>
+                            <div class="modal-coverage-value modal-value">70%</div>
+                        </div>
+                        
+                        <canvas class="modal-line-chart"></canvas>
+                    </div>
+                </div> -->
 
             </div>
         </div>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script> -->
         <script>
             dicionario = {{ dicionario }};
 
-            var ctx = document.getElementsByClassName("line-chart");
-            var total = document.querySelector('.total-statements-value').innerHTML;
-            var executed = document.querySelector('.executed-statements-value').innerHTML;
+            // var ctx = document.getElementsByClassName("line-chart");
+            // var total = document.querySelector('.total-statements-value').innerHTML;
+            // var executed = document.querySelector('.executed-statements-value').innerHTML;
 
-            var chartGraph = new Chart(ctx, {type: 'doughnut',
-                data : {
-                    labels: [
-                        'Executed Statements',
-                        'Not Executed Statements',
-                    ],
-                    datasets: [{
-                        label: 'Total Coverage',
-                        data: [executed,total - executed ],
-                        backgroundColor: [
-                        'rgb(54, 162, 235)',
-                        'rgb(255, 99, 132)'
+            // var chartGraph = new Chart(ctx, {type: 'doughnut',
+            //     data : {
+            //         labels: [
+            //             'Executed Statements',
+            //             'Not Executed Statements',
+            //         ],
+            //         datasets: [{
+            //             label: 'Total Coverage',
+            //             data: [executed,total - executed ],
+            //             backgroundColor: [
+            //             'rgb(54, 162, 235)',
+            //             'rgb(255, 99, 132)'
                     
-                        ],
-                        hoverOffset: 4
-                    }]
-                }});
+            //             ],
+            //             hoverOffset: 4
+            //         }]
+            //     }});
 
 
-            let tbody = document.getElementById('tbody')
+            let tbody_1 = document.getElementById('tbody_1')
 
-            for(let i in dicionario) {
-                let tr = tbody.insertRow();
+            for(let test_file in dicionario) {
+                let tr = tbody_1.insertRow();
 
                 let td_name = tr.insertCell();
-                let td_executed = tr.insertCell();
-                let td_total = tr.insertCell();
-                let td_coverage = tr.insertCell();
+                td_name.innerHTML = test_file
 
-                td_name.innerHTML = i
-                td_executed.innerHTML = dicionario[i].executed_statements;
-                td_total.innerHTML = dicionario[i].total_statements;
-                td_coverage.innerHTML = (dicionario[i].coverage*100).toFixed(2)+"%";
+                for(let test_case in dicionario[test_file]) {
+                
+                    let tr_2 = tbody_2.insertRow();
+                    let td_name_2 = tr_2.insertCell();
+                    td_name_2.innerHTML = test_case
 
-                td_executed.classList.add('center')
-                td_total.classList.add('center')
-                td_coverage.classList.add('center')
+                    for(let tested_file in dicionario[test_file][test_case]) {
+                    
+                        let tr_3 = tbody_3.insertRow();
+                        let td_name_3 = tr_3.insertCell();
+                        let td_executed = tr_3.insertCell();
+                        let td_total = tr_3.insertCell();
+                        let td_coverage = tr_3.insertCell();
 
-            }
+                        td_name_3.innerHTML = tested_file;
+                        td_executed.innerHTML = dicionario[test_file][test_case][tested_file]['executed_statements'];
+                        td_total.innerHTML = dicionario[test_file][test_case][tested_file]['total_statements'];
+                        td_coverage.innerHTML = (dicionario[test_file][test_case][tested_file]['coverage']*100).toFixed(2) + '%';
+
+                        td_executed.classList.add('center')
+                        td_total.classList.add('center')
+                        td_coverage.classList.add('center')
+                    }
+                }
+
+            };
             
+            function InstantiateModal(modalId){
+                const modal = document.getElementById(modalId);
+                modal.classList.add("active");
+                modal.addEventListener('click', (e) => {
+                    if (e.target.id == modalId || e.target.id == 'modal-close'){
+                        modal.classList.remove("active");
+                    }
+                })
+            };
+
+            const teste = document.getElementById("top");
+            teste.addEventListener('click', () => InstantiateModal('modal'));
+        
         </script>
 
         <style>

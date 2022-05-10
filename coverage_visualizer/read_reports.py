@@ -41,7 +41,7 @@ def count_statements(compute_final=True):
             total_coverage = 0
         
         # Add the coverage of the project
-        files_coverage['final_coverage'] = {'total_statements': total_statements, 'executed_statements': total_executed_statements, 'coverage': total_coverage}
+        files_coverage['Final Coverage'] = {'total_statements': total_statements, 'executed_statements': total_executed_statements, 'coverage': total_coverage}
     
     return files_coverage
 

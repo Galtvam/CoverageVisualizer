@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="ptbr">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Coverage Visualizer</title>
+
+        <link href="../styles/normalize.css" rel='stylesheet'>
+        <link href="../styles/main.css" rel='stylesheet'>
+        <script src="https://kit.fontawesome.com/050c362dbf.js" crossorigin="anonymous"></script>
+  
+    </head>
+    <body>
+        <div class="main-container">
+            <header>
+                <h1 id="top">Coverage Visualizer</h1>
+                <div class="menu">
+                    <nav>
+                        <a href="#"><i class="fa-solid fa-house"></i></a>
+                        <a href="#details_section"><i class="fa-solid fa-circle-info"></i></a>
+                        <a><i class="fa-solid fa-gear"></i></a>
+                    </nav>
+
+                </div>
+            </header>
+            <div class="coverage-container" >
+                <div class="flex-2-col">
+                    <div class="total-statements-container info-container">
+                        <h2 class="title-label">Total Statements</h2>
+                        <p class="total-statements-value value">{{ total_statements }}</p>
+                    </div>
+
+                    <div class="executed-statements-container info-container">
+                        <h2 class="title-label">Executed Statements</h2>
+                        <p class="executed-statements-value value">{{ executed_statements }}</p>
+                    </div>
+
+                </div>
+                <div class="flex-2-row">
+                    <div class="total-coverage-container info-container">
+                        <h2 class="title-label">Total Coverage</h2>
+                        <p class="total-coverage-value value">{{ total_coverage }}</p>
+                    </div>
+                    <canvas class="line-chart"></canvas>
+                </div>
+
+                <div class="report-details flex-2-row">
+                    <h2 id="details_section">Detailed Report</h2>
+                    <table class="content-table table-sortable">
+                        <thead>
+                            <th>Archive name</th>
+                            <th class="th-executed">Executed statements</th>
+                            <th class="th-total">Total statements</th>
+                            <th class="th-coverage">Coverage</th>
+                        </thead>
+                        <tbody id="tbody">
+                            
+                        </tbody>
+                    </table>
+                
+                </div>
+
+                <footer>
+                    <p></p>
+                </footer>
+                
+                <div id="modal" class="modal-container">
+                    <div class="modal">
+                        <div class="modal-header">
+                            <div class="file_image">
+                                <img src="../assets/file_image.png" alt="File image">
+                            </div>
+                            <h2 id="modal-file-name">Nome_do_arquivo.py</h2>
+                        </div>
+                        <button id ="modal-close" class="modal-close">X</button>
+
+                        <div class="modal-total-statements-container modal-info-container">
+                            <div class="modal-total-statements-title modal-title">Total Statements</div>
+                            <div class="modal-total-statements-value modal-value">10</div>
+                        </div>
+
+                        <div class="modal-executed-statements-container modal-info-container">
+                            <div class="modal-executed-statements-title modal-title">Executed Statements</div>
+                            <div class="modal-executed-statements-value modal-value">7</div>
+                        </div>
+
+                        <div class="modal-coverage-container modal-info-container">
+                            <div class="modal-coverage-title modal-title">Coverage</div>
+                            <div class="modal-coverage-value modal-value">70%</div>
+                        </div>
+                        
+                        <canvas class="modal-line-chart"></canvas>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+        <script>
+            dicionario = {{ dicionario }};
+
+            var ctx = document.getElementsByClassName("line-chart");
+            var total = document.querySelector('.total-statements-value').innerHTML;
+            var executed = document.querySelector('.executed-statements-value').innerHTML;
+
+            var chartGraph = new Chart(ctx, {type: 'doughnut',
+                data : {
+                    labels: [
+                        'Executed Statements',
+                        'Not Executed Statements',
+                    ],
+                    datasets: [{
+                        label: 'Total Coverage',
+                        data: [executed,total - executed ],
+                        backgroundColor: [
+                        'rgb(54, 162, 235)',
+                        'rgb(255, 99, 132)'
+                    
+                        ],
+                        hoverOffset: 4
+                    }]
+                }});
+
+
+            let tbody = document.getElementById('tbody')
+
+            for(let i in dicionario) {
+                let tr = tbody.insertRow();
+
+                let td_name = tr.insertCell();
+                let td_executed = tr.insertCell();
+                let td_total = tr.insertCell();
+                let td_coverage = tr.insertCell();
+
+                td_name.innerHTML = i
+                td_executed.innerHTML = dicionario[i].executed_statements;
+                td_total.innerHTML = dicionario[i].total_statements;
+                td_coverage.innerHTML = (dicionario[i].coverage*100).toFixed(2)+"%";
+
+                td_executed.classList.add('center')
+                td_total.classList.add('center')
+                td_coverage.classList.add('center')
+
+            };
+            
+            function InstantiateModal(modalId){
+                const modal = document.getElementById(modalId);
+                modal.classList.add("active");
+                modal.addEventListener('click', (e) => {
+                    if (e.target.id == modalId || e.target.id == 'modal-close'){
+                        modal.classList.remove("active");
+                    }
+                })
+            };
+
+            const teste = document.getElementById("top");
+            teste.addEventListener('click', () => InstantiateModal('modal'));
+        
+        </script>
+
+        <style>
+            @charset "UTF-8";
+
+            html{
+                /* A cada 1rem = 10px*/
+                font-size: 62.5%;
+                font-family: Lato, Arial, sans-serif;
+            }
+
+            body{
+                font-size: 1.6rem;
+            }
+            .center{
+                text-align: center;
+            }
+            .main-container{
+                display: flex;
+                flex-direction: column;
+            }
+
+            header{
+                box-sizing: border-box;
+                padding: 15px 25px 0 25px ;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                flex-direction: row;
+            }
+
+            header h1{
+                margin:0;
+                padding:0;
+                display: inline-block;
+                font-size:2.8rem;
+            }
+
+            .coverage-container{
+                margin: 32px 64px;
+            }
+
+            .info-container h2{
+                text-align: center;
+                color: #0BA360; 
+                font-size: 1.6rem;
+                text-transform: uppercase;
+            }
+
+            .value{
+                text-align: center;
+                font-size: 2.5rem;
+                font-weight: bold;
+            }
+
+            .total-coverage-container h2{
+                font-size:2.2rem;
+            }
+
+            .total-coverage-container .value{
+                font-size: 3rem;
+            }
+
+            .flex-2-row{
+                display:flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .flex-2-col{
+                display:flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+            }
+
+
+            .line-chart{
+                max-width: 460px;
+                max-height: 460px;
+            }
+
+            .flex-2-col .info-container{
+                margin:10px 40px;
+
+            }
+
+            .report-details{
+                margin: 32px 64px;
+            }
+
+            .report-details h2{
+                font-size:2.2rem;
+            }
+            .content-table{
+                border-collapse: collapse;
+                margin:25px 0;
+                font-size: 1.5rem;
+                min-width: 400px;
+                border-radius: 5px 5px 0 0;
+                /*
+                overflow: hidden;
+                box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+                */
+            }
+
+            .content-table thead tr{
+                background-color: #0BA360;
+                color: #ffffff;
+                text-align: left;
+                font-weight: bold;
+            }
+
+            .content-table th,
+            .content-table td{
+                padding:12px 15px;
+            }
+
+            .content-table tbody tr{
+                border-bottom: 1px solid #dddddd;
+            }
+
+            .content-table tbody tr:nth-of-type(even) {
+                background-color: #f3f3f3;
+            }
+
+            .content-table tbody tr:last-of-type {
+                border-bottom: 2px solid #0BA360;
+            }
+
+            .menu nav a{
+                margin: 0 10px;
+                font-size:2rem;
+            }
+
+            .menu nav a:hover{
+                cursor: pointer;
+                color: rgba(0,0,0,0.3);
+            }
+            }
+
+            /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
+
+            /* Document
+            ========================================================================== */
+
+            /**
+            * 1. Correct the line height in all browsers.
+            * 2. Prevent adjustments of font size after orientation changes in iOS.
+            */
+
+            html {
+            line-height: 1.15; /* 1 */
+            -webkit-text-size-adjust: 100%; /* 2 */
+            }
+
+            /* Sections
+            ========================================================================== */
+
+            /**
+            * Remove the margin in all browsers.
+            */
+
+            body {
+            margin: 0;
+            }
+
+            /**
+            * Render the `main` element consistently in IE.
+            */
+
+            main {
+            display: block;
+            }
+
+            /**
+            * Correct the font size and margin on `h1` elements within `section` and
+            * `article` contexts in Chrome, Firefox, and Safari.
+            */
+
+            h1 {
+            font-size: 2em;
+            margin: 0.67em 0;
+            }
+
+            /* Grouping content
+            ========================================================================== */
+
+            /**
+            * 1. Add the correct box sizing in Firefox.
+            * 2. Show the overflow in Edge and IE.
+            */
+
+            hr {
+            box-sizing: content-box; /* 1 */
+            height: 0; /* 1 */
+            overflow: visible; /* 2 */
+            }
+
+            /**
+            * 1. Correct the inheritance and scaling of font size in all browsers.
+            * 2. Correct the odd `em` font sizing in all browsers.
+            */
+
+            pre {
+            font-family: monospace, monospace; /* 1 */
+            font-size: 1em; /* 2 */
+            }
+
+            /* Text-level semantics
+            ========================================================================== */
+
+            /**
+            * Remove the gray background on active links in IE 10.
+            */
+
+            a {
+            background-color: transparent;
+            }
+
+            /**
+            * 1. Remove the bottom border in Chrome 57-
+            * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.
+            */
+
+            abbr[title] {
+            border-bottom: none; /* 1 */
+            text-decoration: underline; /* 2 */
+            text-decoration: underline dotted; /* 2 */
+            }
+
+            /**
+            * Add the correct font weight in Chrome, Edge, and Safari.
+            */
+
+            b,
+            strong {
+            font-weight: bolder;
+            }
+
+            /**
+            * 1. Correct the inheritance and scaling of font size in all browsers.
+            * 2. Correct the odd `em` font sizing in all browsers.
+            */
+
+            code,
+            kbd,
+            samp {
+            font-family: monospace, monospace; /* 1 */
+            font-size: 1em; /* 2 */
+            }
+
+            /**
+            * Add the correct font size in all browsers.
+            */
+
+            small {
+            font-size: 80%;
+            }
+
+            /**
+            * Prevent `sub` and `sup` elements from affecting the line height in
+            * all browsers.
+            */
+
+            sub,
+            sup {
+            font-size: 75%;
+            line-height: 0;
+            position: relative;
+            vertical-align: baseline;
+            }
+
+            sub {
+            bottom: -0.25em;
+            }
+
+            sup {
+            top: -0.5em;
+            }
+
+            /* Embedded content
+            ========================================================================== */
+
+            /**
+            * Remove the border on images inside links in IE 10.
+            */
+
+            img {
+            border-style: none;
+            }
+
+            /* Forms
+            ========================================================================== */
+
+            /**
+            * 1. Change the font styles in all browsers.
+            * 2. Remove the margin in Firefox and Safari.
+            */
+
+            button,
+            input,
+            optgroup,
+            select,
+            textarea {
+            font-family: inherit; /* 1 */
+            font-size: 100%; /* 1 */
+            line-height: 1.15; /* 1 */
+            margin: 0; /* 2 */
+            }
+
+            /**
+            * Show the overflow in IE.
+            * 1. Show the overflow in Edge.
+            */
+
+            button,
+            input { /* 1 */
+            overflow: visible;
+            }
+
+            /**
+            * Remove the inheritance of text transform in Edge, Firefox, and IE.
+            * 1. Remove the inheritance of text transform in Firefox.
+            */
+
+            button,
+            select { /* 1 */
+            text-transform: none;
+            }
+
+            /**
+            * Correct the inability to style clickable types in iOS and Safari.
+            */
+
+            button,
+            [type="button"],
+            [type="reset"],
+            [type="submit"] {
+            -webkit-appearance: button;
+            }
+
+            /**
+            * Remove the inner border and padding in Firefox.
+            */
+
+            button::-moz-focus-inner,
+            [type="button"]::-moz-focus-inner,
+            [type="reset"]::-moz-focus-inner,
+            [type="submit"]::-moz-focus-inner {
+            border-style: none;
+            padding: 0;
+            }
+
+            /**
+            * Restore the focus styles unset by the previous rule.
+            */
+
+            button:-moz-focusring,
+            [type="button"]:-moz-focusring,
+            [type="reset"]:-moz-focusring,
+            [type="submit"]:-moz-focusring {
+            outline: 1px dotted ButtonText;
+            }
+
+            /**
+            * Correct the padding in Firefox.
+            */
+
+            fieldset {
+            padding: 0.35em 0.75em 0.625em;
+            }
+
+            /**
+            * 1. Correct the text wrapping in Edge and IE.
+            * 2. Correct the color inheritance from `fieldset` elements in IE.
+            * 3. Remove the padding so developers are not caught out when they zero out
+            *    `fieldset` elements in all browsers.
+            */
+
+            legend {
+            box-sizing: border-box; /* 1 */
+            color: inherit; /* 2 */
+            display: table; /* 1 */
+            max-width: 100%; /* 1 */
+            padding: 0; /* 3 */
+            white-space: normal; /* 1 */
+            }
+
+            /**
+            * Add the correct vertical alignment in Chrome, Firefox, and Opera.
+            */
+
+            progress {
+            vertical-align: baseline;
+            }
+
+            /**
+            * Remove the default vertical scrollbar in IE 10+.
+            */
+
+            textarea {
+            overflow: auto;
+            }
+
+            /**
+            * 1. Add the correct box sizing in IE 10.
+            * 2. Remove the padding in IE 10.
+            */
+
+            [type="checkbox"],
+            [type="radio"] {
+            box-sizing: border-box; /* 1 */
+            padding: 0; /* 2 */
+            }
+
+            /**
+            * Correct the cursor style of increment and decrement buttons in Chrome.
+            */
+
+            [type="number"]::-webkit-inner-spin-button,
+            [type="number"]::-webkit-outer-spin-button {
+            height: auto;
+            }
+
+            /**
+            * 1. Correct the odd appearance in Chrome and Safari.
+            * 2. Correct the outline style in Safari.
+            */
+
+            [type="search"] {
+            -webkit-appearance: textfield; /* 1 */
+            outline-offset: -2px; /* 2 */
+            }
+
+            /**
+            * Remove the inner padding in Chrome and Safari on macOS.
+            */
+
+            [type="search"]::-webkit-search-decoration {
+            -webkit-appearance: none;
+            }
+
+            /**
+            * 1. Correct the inability to style clickable types in iOS and Safari.
+            * 2. Change font properties to `inherit` in Safari.
+            */
+
+            ::-webkit-file-upload-button {
+            -webkit-appearance: button; /* 1 */
+            font: inherit; /* 2 */
+            }
+
+            /* Interactive
+            ========================================================================== */
+
+            /*
+            * Add the correct display in Edge, IE 10+, and Firefox.
+            */
+
+            details {
+            display: block;
+            }
+
+            /*
+            * Add the correct display in all browsers.
+            */
+
+            summary {
+            display: list-item;
+            }
+
+            /* Misc
+            ========================================================================== */
+
+            /**
+            * Add the correct display in IE 10+.
+            */
+
+            template {
+            display: none;
+            }
+
+            /**
+            * Add the correct display in IE 10.
+            */
+
+            [hidden] {
+            display: none;
+            }
+
+        </style>
+    </body>
+</html>
