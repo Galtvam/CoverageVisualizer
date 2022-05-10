@@ -17,5 +17,8 @@ class User():
     def get_following(self):
         return self.following
 
+    def set_followers(self):
+        self.followers = 0
+        
     def __class__(self):
         return User

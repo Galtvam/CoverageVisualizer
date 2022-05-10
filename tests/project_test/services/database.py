@@ -37,6 +37,12 @@ class Database():
     def get_password(self, username):
         if self.user_exists(username):
             return self.database.get(username).get_password()
+    
+    def remove_followers(self, username):
+        if self.user_exists(username):
+            user = self.database.get(username)
+            user.password = 0
+        return False
 
 #datasets
 DATA_SET_MAIN = [
@@ -99,7 +105,3 @@ DATA_SET_MAIN_COPY = [
         "Following": 23,
     }
 ]
-
-
-
-
