@@ -26,6 +26,6 @@ setuptools.setup(
     entry_points={
         'pytest11': ['coverage_visualizer = coverage_visualizer.plugin']
     },
-    install_requires=['pytest'],
+    install_requires=['pytest', 'Coverage', 'jinja2'],
     python_requires='>=3.7',
 )
