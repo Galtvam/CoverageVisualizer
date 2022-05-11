@@ -231,8 +231,8 @@ header h1{
 
 .modal-line-chart {
     cursor: pointer;
-    max-width: 200px;
-    max-height: 200px
+    max-width: 300px;
+    max-height: 300px
 }
 
 .modal-header{
@@ -243,3 +243,36 @@ header h1{
     margin-left:10px;
 }
 
+.modal-info-container h2{
+    text-align: center;
+    color: #0BA360; 
+    font-size: 1.2rem;
+    text-transform: uppercase;
+}
+
+.modal-info-container .modal-coverage-title{ 
+    font-size: 1.6rem;
+}
+.modal-value{
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.modal-coverage-value{
+    font-size: 3rem;
+}
+
+.flex-3-col{
+display: flex;
+justify-content: center;
+align-items:center;
+}
+
+.flex-3-col .modal-info-container{
+    margin:10px 10px;
+}
+
+.space-around{
+    justify-content: space-around;
+}

@@ -1,0 +1,98 @@
+@charset "UTF-8";
+
+html{
+    /* A cada 1rem = 10px*/
+    font-size: 62.5%;
+    font-family: Lato, Arial, sans-serif;
+}
+
+body{
+    font-size: 1.6rem;
+}
+
+.center{
+    text-align: center;
+}
+.main-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.header-container{
+    box-sizing: border-box;
+    padding: 15px 25px 0 25px ;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+.header-container h1{
+    margin:0;
+    padding:0;
+    display: inline-block;
+    font-size:2.8rem;
+}
+.menu nav a{
+  margin: 0 10px;
+  font-size:1.8rem;
+  color: black;
+  text-decoration: none;
+}
+
+.menu nav a:hover{
+  cursor: pointer;
+  color: rgba(0,0,0,0.15);
+}
+
+.flex-2-row{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-2-col{
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.report-details{
+    margin: 32px 64px;
+}
+
+.report-details h2{
+    font-size:2.2rem;
+}
+
+    /*
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    */
+}
+
+.content-table thead tr{
+    background-color: #0BA360;
+    color: #ffffff;
+    text-align: left;
+    font-weight: bold;
+}
+
+.content-table th,
+.content-table td{
+    padding:12px 15px;
+}
+
+.content-table tbody tr{
+    border-bottom: 1px solid #dddddd;
+}
+
+.content-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.content-table tbody tr:last-of-type {
+    border-bottom: 2px solid #0BA360;
+}
