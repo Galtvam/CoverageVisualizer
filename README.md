@@ -67,3 +67,4 @@ the test cases will compare the coverage results of our plugin's observation wit
 
 
 **OBS:** For execution purposes the coverage values from **Coverage** lib were stored within the **test_plugin.py** file. This decision was made because of the **pytest.main()** behavior, it shares session information through subsequent calls of the fanction, what breaks the test cases. If the test cases are individually ran, they work well properly.
+**OBS 2:** The **Case mode** does not consider **fixtures**, only the executed statements called by the test function. 
