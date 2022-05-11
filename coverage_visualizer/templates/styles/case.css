@@ -97,12 +97,10 @@ body{
 
 .content-table{
   border-collapse: collapse;
-  margin:25px 0;
+  margin: 0;
   font-size: 1.5rem;
   min-width: 400px;
   border-radius: 5px 5px;
-  overflow: hidden;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
 }
   
 .content-table thead tr{
@@ -112,9 +110,11 @@ body{
   font-weight: bold;
 }
 
-.content-table th,
+.content-table th{
+  padding: 4px 15px;
+}
 .content-table td{
-  padding:12px 15px;
+  padding:10px 15px;
 }
 
 .content-table tbody tr{
@@ -170,8 +170,13 @@ div#outer {
   background-color: #0BA360;
 }
 
+.title-label p{
+  padding-left: 9px;
+}
+
 .title{
-  cursor: pointer;
+  font-size: 1.5rem !important;
+  cursor: pointer !important;
 }
 .title:hover{
   color: #0BA360 !important;
