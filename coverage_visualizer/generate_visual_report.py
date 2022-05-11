@@ -13,7 +13,9 @@ class VisualReportGenerator:
         print('Total executed statements: ' + str(final_report['Final Coverage']['executed_statements']))
         print('Total Coverage: ' + str((final_report['Final Coverage']['coverage'])*100) + '%')
         
-        loader = FileSystemLoader(os.path.join(os.path.dirname(__file__), 'templates'))
+        root_path = (os.path.join(os.path.dirname(__file__), 'templates'))
+
+        loader = FileSystemLoader(root_path)
         env = Environment(loader=loader)
         template = env.get_template("template_project.html")
 
@@ -21,7 +23,7 @@ class VisualReportGenerator:
         file = open("output/index.html", "w")
 
         render = template.render(total_statements=final_report['Final Coverage']['total_statements'], executed_statements= final_report['Final Coverage']['executed_statements'],
-                        total_coverage= str(round(final_report['Final Coverage']['coverage']*100, 2)) + '%', dicionario=final_report)
+                        total_coverage= str(round(final_report['Final Coverage']['coverage']*100, 2)) + '%', dicionario=final_report, root_path=root_path)
 
         file.write(render)
         file.close()
