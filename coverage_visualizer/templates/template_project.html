@@ -40,7 +40,7 @@
                 <div class="flex-2-row">
                     <div class="total-coverage-container info-container">
                         <h2 class="title-label">Total Coverage</h2>
-                        <p class="total-coverage-value value">{{ total_coverage }}</p>
+                        <p class="total-coverage-value value">{{ total_coverage}}</p>
                     </div>
                     <canvas class="line-chart"></canvas>
                 </div>
@@ -58,7 +58,6 @@
                             
                         </tbody>
                     </table>
-                
                 </div>
 
                 <footer>
@@ -73,24 +72,29 @@
                             </div>
                             <h2 id="modal-file-name">Nome_do_arquivo.py</h2>
                         </div>
-                        <button id ="modal-close" class="modal-close">x</button>
-
-                        <div class="modal-total-statements-container modal-info-container">
-                            <div class="modal-total-statements-title modal-title">Total Statements</div>
-                            <div class="modal-total-statements-value modal-value"></div>
-                        </div>
-
-                        <div class="modal-executed-statements-container modal-info-container">
-                            <div class="modal-executed-statements-title modal-title">Executed Statements</div>
-                            <div class="modal-executed-statements-value modal-value"></div>
-                        </div>
-
-                        <div class="modal-coverage-container modal-info-container">
-                            <div class="modal-coverage-title modal-title">Coverage</div>
-                            <div class="modal-coverage-value modal-value"></div>
-                        </div>
                         
-                        <canvas class="modal-line-chart"></canvas>
+                        <button id ="modal-close" class="modal-close">x</button>
+                        
+                        <div class="flex-2-col space-around">
+                            <div class="flex-3-row">
+                                <div class="modal-total-statements-container modal-info-container">
+                                    <h2 class="modal-total-statements-title modal-title">Total Statements</h2>
+                                    <p class="modal-total-statements-value modal-value"></p>
+                                </div>
+
+                                <div class="modal-executed-statements-container modal-info-container">
+                                    <h2 class="modal-executed-statements-title modal-title">Executed Statements</h2>
+                                    <p class="modal-executed-statements-value modal-value"></p>
+                                </div>
+
+                                <div class="modal-coverage-container modal-info-container">
+                                    <h2 class="modal-coverage-title modal-title">Coverage</h2>
+                                    <p class="modal-coverage-value modal-value"></p>
+                                </div>
+                            </div>
+
+                            <canvas class="modal-line-chart"></canvas>
+                        </div>
                     </div>
                 </div>
 
@@ -113,7 +117,7 @@
                 td_name.innerHTML = i
                 td_executed.innerHTML = dicionario[i].executed_statements;
                 td_total.innerHTML = dicionario[i].total_statements;
-                td_coverage.innerHTML = dicionario[i].coverage*100+"%";
+                td_coverage.innerHTML =(dicionario[i].coverage*100).toFixed(2)+"%"
 
                 td_executed.classList.add('center')
                 td_total.classList.add('center')
@@ -185,7 +189,7 @@
                     }
                 })
             };
-            // OBSERVER TR //
+            // Observer trs //
             document.querySelectorAll('.content-table td').forEach(headerCell =>{
              headerCell.addEventListener('click', () =>{
                 const trElement = headerCell.parentElement;
@@ -197,6 +201,5 @@
              
         </script>
         <script src="{{root_path}}/scripts/tablesort.js"></script>           
-        </style>
     </body>
 </html>

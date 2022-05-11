@@ -202,12 +202,29 @@ header h1{
 
 .modal-close{
     position:absolute;
-    top:4px;
-    right:4px;
+    top:5px;
+    right:5px;
     cursor: pointer;
+
+    margin: 0;
+    border: 0;
+    padding: 0;
+    color: #0BA360;;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    transition: all 150ms;
 }
 .file-image img{
-    width:40px;
+    width:30px;
+}
+
+h2#modal-file-name{
+    font-size: 1.8rem;
 }
 
 .active{
@@ -231,15 +248,48 @@ header h1{
 
 .modal-line-chart {
     cursor: pointer;
-    max-width: 200px;
-    max-height: 200px
+    max-width: 300px;
+    max-height: 300px
 }
 
 .modal-header{
     display:flex;
     align-items: center;
     flex-direction: row;
-    gap:4px;
+    gap:6px;
     margin-left:10px;
 }
 
+.modal-info-container h2{
+    text-align: center;
+    color: #0BA360; 
+    font-size: 1.2rem;
+    text-transform: uppercase;
+}
+
+.modal-info-container .modal-coverage-title{ 
+    font-size: 1.6rem;
+}
+.modal-value{
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.modal-coverage-value{
+    font-size: 3rem;
+}
+
+.flex-3-col{
+display: flex;
+justify-content: center;
+align-items:center;
+}
+
+.flex-3-col .modal-info-container{
+    margin:10px 10px;
+}
+
+.space-around{
+    justify-content: space-around;
+}

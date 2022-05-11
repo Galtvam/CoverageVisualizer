@@ -34,15 +34,15 @@ class VisualReportGenerator:
         '''
         Generate a report divided by test file, with the coverage of each file per test case.
         '''
-        
-        loader = FileSystemLoader(os.path.join(os.path.dirname(__file__), 'templates'))
+        root_path = (os.path.join(os.path.dirname(__file__), 'templates'))
+        loader = FileSystemLoader(root_path)
         env = Environment(loader=loader)
         template = env.get_template("template_case.html")
 
         os.makedirs("output", exist_ok=True)
         file = open("output/index.html", "w")
 
-        render = template.render(dicionario=final_report)
+        render = template.render(dicionario=final_report, root_path=root_path)
 
         file.write(render)
         file.close()
