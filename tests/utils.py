@@ -31,19 +31,19 @@ def run_pycov():
     cov.xml_report()
     return get_coverage()
 
-def run_pycov_fixtures(test_name):
+def run_pycov_specific_test_case(test_name, element_name,):
     cov = Coverage()
     cov.start()
-    pytest.main([(os.getcwd() + "\\project_test\\tests\\" + test_name ), ])
+    pytest.main([(os.getcwd() + "\\project_test\\tests\\" + test_name )])
     cov.stop()
     cov.xml_report()
-    return get_coverage()
+    return get_coverage(element_name= element_name)
 
-def get_coverage():
-    mydoc = minidom.parse('coverage.xml')
+def get_coverage(element_name, path='coverage.xml', ):
+    mydoc = minidom.parse(path)
     classes = mydoc.getElementsByTagName('package')
     for element in classes:
-        if element.getAttribute('name') == "project_test.services":
+        if element.getAttribute('name') == element_name:
             coverage = element
             return int(float(coverage.attributes['line-rate'].value)*100)
     return False
