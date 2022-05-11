@@ -29,7 +29,7 @@ def run_pycov():
     pytest.main([(os.getcwd() + "\\project_test\\"), ])
     cov.stop()
     cov.xml_report()
-    return get_coverage()
+    return get_coverage('project_test.services')
 
 def run_pycov_specific_test_case(test_name, element_name,):
     cov = Coverage()
