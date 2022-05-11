@@ -1,0 +1,295 @@
+@charset "UTF-8";
+
+html{
+    /* A cada 1rem = 10px*/
+    font-size: 62.5%;
+    font-family: Lato, Arial, sans-serif;
+    scroll-behavior: smooth;
+}
+
+body{
+    font-size: 1.6rem;
+}
+.center{
+    text-align: center;
+}
+.main-container{
+    display: flex;
+    flex-direction: column;
+}
+
+header{
+    box-sizing: border-box;
+    padding: 20px 25px 0 25px ;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+header h1{
+    margin:0;
+    padding:0;
+    display: inline-block;
+    font-size:2.8rem;
+}
+
+.menu nav a{
+    margin: 0 10px;
+    font-size:1.8rem;
+    color: black;
+    text-decoration: none;
+}
+
+.menu nav a:hover{
+    cursor: pointer;
+    color: rgba(0,0,0,0.15);
+}
+
+.coverage-container{
+    margin: 32px 64px;
+}
+
+.info-container h2{
+    text-align: center;
+    color: #0BA360; 
+    font-size: 1.6rem;
+    text-transform: uppercase;
+}
+
+.value{
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.total-coverage-container h2{
+    font-size:2.2rem;
+}
+
+.total-coverage-container .value{
+    font-size: 3rem;
+}
+
+.flex-2-row{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-2-col{
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.line-chart{
+    cursor: pointer;
+    max-width: 400px;
+    max-height: 400px;
+}
+
+.flex-2-col .info-container{
+    margin:10px 40px;
+
+}
+
+.report-details{
+    margin: 32px 64px;
+}
+
+.report-details h2{
+    font-size:2.2rem;
+}
+.content-table{
+    border-collapse: collapse;
+    margin:25px 0;
+    font-size: 1.5rem;
+    min-width: 400px;
+    border-radius: 5px 5px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+}
+    
+.content-table thead tr{
+    background-color: #0BA360;
+    color: #ffffff;
+    text-align: left;
+    font-weight: bold;
+}
+
+.content-table th,
+.content-table td{
+    padding:12px 15px;
+}
+
+.content-table tbody tr{
+    border-bottom: 1px solid #dddddd;
+}
+
+.content-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.content-table tbody tr:last-of-type {
+    border-bottom: 2px solid #0BA360;
+}
+
+.content-table tbody tr:hover{
+    cursor: pointer;
+    color: #0BA360;
+    background-color: rgba(0,0,0,0.15);
+}
+
+.table-sortable th{
+    cursor: pointer;
+}
+
+.table-sortable .th-executed{
+    min-width: 160px;
+}
+
+.table-sortable .th-total{
+    min-width: 130px;
+}
+
+.table-sortable .th-coverage{
+    min-width: 85px;
+}
+
+.table-sortable .th-sorted-asc::after{
+    content:'\25b4';
+}
+
+.table-sortable .th-sorted-desc::after{
+    content:'\25be';
+}
+
+.table-sortable .th-sorted-asc::after,
+.table-sortable .th-sorted-desc::after{
+    margin-left: 5px;
+}
+
+.table-sortable .th-sorted-asc,
+.table-sortable .th-sorted-desc{
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.modal-container{
+    height: 100vh;
+    width:100vw;
+    position:fixed;
+    background-color: rgba(0, 0, 0, 0.3);
+    top:0px;
+    left:0px;
+    z-index:9999;
+
+    display:none;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal{
+    height:60vh;
+    width:60vw;
+    position: relative;
+    background-color: white;
+    border-radius: 6px;
+}
+
+.modal-close{
+    position:absolute;
+    top:5px;
+    right:5px;
+    cursor: pointer;
+
+    margin: 0;
+    border: 0;
+    padding: 0;
+    color: #0BA360;;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    transition: all 150ms;
+}
+.file-image img{
+    width:30px;
+}
+
+h2#modal-file-name{
+    font-size: 1.8rem;
+}
+
+.active{
+    display: flex;
+}
+
+@keyframes modal{
+    from{
+        opacity:0;
+        transform: translate3d(0, -60px, 0);
+    }
+    to{
+        opacity:1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+.active .modal{
+    animation: modal .6s;
+}
+
+.modal-line-chart {
+    cursor: pointer;
+    max-width: 300px;
+    max-height: 300px
+}
+
+.modal-header{
+    display:flex;
+    align-items: center;
+    flex-direction: row;
+    gap:6px;
+    margin-left:10px;
+}
+
+.modal-info-container h2{
+    text-align: center;
+    color: #0BA360; 
+    font-size: 1.2rem;
+    text-transform: uppercase;
+}
+
+.modal-info-container .modal-coverage-title{ 
+    font-size: 1.6rem;
+}
+.modal-value{
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.modal-coverage-value{
+    font-size: 3rem;
+}
+
+.flex-3-col{
+display: flex;
+justify-content: center;
+align-items:center;
+}
+
+.flex-3-col .modal-info-container{
+    margin:10px 10px;
+}
+
+.space-around{
+    justify-content: space-around;
+}

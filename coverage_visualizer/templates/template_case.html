@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Coverage Visualizer</title>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" integrity="sha512-8bHTC73gkZ7rZ7vpqUQThUDhqcNFyYi2xgDgPDHc+GXVGHXq+xPjynxIopALmOPqzo9JZj0k6OqqewdGO3EsrQ==" crossorigin="anonymous" />
+        <link href="{{root_path}}/styles/normalize.css" rel='stylesheet'>
+        <link href="{{root_path}}/styles/case.css" rel='stylesheet'>
+
+        <script src="https://kit.fontawesome.com/050c362dbf.js" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js" integrity="sha512-dqw6X88iGgZlTsONxZK9ePmJEFrmHwpuMrsUChjAw1mRUhUITE5QU9pkcSox+ynfLhL15Sv2al5A0LVyDCmtUw==" crossorigin="anonymous"></script>
+
+    </head>
+    <body>
+        <div class="main-container">
+            <header>
+                <div class="header-container">
+                    <h1 id="top">Coverage Visualizer</h1>
+                    <div class="menu">
+                        <nav>
+                            <a href="#"><i class="fa-solid fa-house"></i></a>
+                            <a href="#details_section"><i class="fa-solid fa-circle-info"></i></a>
+                            <a><i class="fa-solid fa-gear"></i></a>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+
+            <div class ="report-details flex-2-row">
+                <h2 id="details_section">Detailed Report</h2>
+                <div class="ui styled accordion" id="outer"></div>
+            </div>
+        </div>
+        <script>
+            dicionario = {{ dicionario }};
+            console.log(dicionario);
+
+            $(document).ready(function() {
+                // Creating html variable 
+                var html = "<div class='title-label name-file-label'><p>Test files name</p></div>";
+                $.each(dicionario, function(key, value) {
+
+                    // Tests Names
+                    html += `<div class="title">
+                         ${key}<i class="dropdown icon"></i>
+                    </div> <div class="content" id="${key}"><div class="accordion">`
+
+                    // Tests Cases
+                    html+= `<div class='title-label case-label'>
+                                    <p>Test cases </p>
+                                </div>`;
+                    $.each(value, function(k, v) {
+                    html += `<div class="title">
+                        ${k} <i class="dropdown icon"></i>
+                    </div>`
+
+                    // Check if exist any value and insert a table titles
+                    if ( Object.keys(v).length > 0) {
+                        var idTbody  = k; 
+                        html += `<div class="content"><div class="accordion">
+                            <table class="content-table table-sortable">
+                                <thead>
+                                    <th>Tested file names</th>
+                                    <th class="th-executed">Executed statements</th>
+                                    <th class="th-total">Total statements</th>
+                                    <th class="th-coverage">Coverage</th>
+                                </thead>
+                                <tbody id=${idTbody}>
+                    
+                                </tbody>
+                            </table>`
+                        for (var i = 0; i < Object.keys(v).length; i++) {
+                            var tested_file_name = `${Object.keys(v)[i]}`
+                            var informations =(dicionario[key][k][tested_file_name]);
+                            
+                            let tbody = document.getElementById(idTbody)
+
+                        }
+                    html += `</div></div>`
+                    }
+                })
+                    html += `</div></div>`
+                })  
+                $("#outer").html(html) 
+                $('.ui.accordion').accordion(); 
+            });
+
+            $(document).ready(function() {
+                $.each(dicionario, function(key, value) {
+                    $.each(value, function(k, v) {
+
+                    if ( Object.keys(v).length > 0) {
+                        var idTbody  = k; 
+                        for (var i = 0; i < Object.keys(v).length; i++) {
+                            var tested_file_name = `${Object.keys(v)[i]}`
+                            var informations =(dicionario[key][k][tested_file_name]);
+                            
+                            let tbody = document.getElementById(idTbody);
+
+                            let tr = tbody.insertRow();
+
+                            let td_name = tr.insertCell();
+                            let td_executed = tr.insertCell();
+                            let td_total = tr.insertCell();
+                            let td_coverage = tr.insertCell();
+
+                            td_name.innerHTML = tested_file_name;
+                            td_executed.innerHTML = informations['executed_statements'];
+                            td_total.innerHTML = informations['total_statements'];
+                            td_coverage.innerHTML = (informations['coverage']*100).toFixed(2) + '%';
+
+                            td_executed.classList.add('center')
+                            td_total.classList.add('center')
+                            td_coverage.classList.add('center')
+
+                        }
+                    }})
+                })  
+            });
+
+            // OBSERVER TR //
+            document.querySelectorAll('.content-table td').forEach(headerCell =>{
+            headerCell.addEventListener('click', () =>{
+                const trElement = headerCell.parentElement;
+                var tdValues = []
+                trElement.querySelectorAll('td').forEach(td => tdValues.push(td.textContent.trim()));
+                instantiateModal('modal', tdValues);
+             })
+            });
+        </script>
+        <script src="{{root_path}}/scripts/tablesort.js"></script>  
+    </body>
+</html>

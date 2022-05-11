@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Coverage Visualizer</title>
+
+        <link href="{{root_path}}/styles/normalize.css" rel='stylesheet'>
+        <link href="{{root_path}}/styles/main.css" rel='stylesheet'>
+        <script src="https://kit.fontawesome.com/050c362dbf.js" crossorigin="anonymous"></script>
+  
+    </head>
+    <body>
+        <div class="main-container">
+            <header>
+                <h1 id="top">Coverage Visualizer</h1>
+                <div class="menu">
+                    <nav>
+                        <a href="#"><i class="fa-solid fa-house"></i></a>
+                        <a href="#details_section"><i class="fa-solid fa-circle-info"></i></a>
+                        <a><i class="fa-solid fa-gear"></i></a>
+                    </nav>
+
+                </div>
+            </header>
+            <div class="coverage-container" >
+                <div class="flex-2-col">
+                    <div class="total-statements-container info-container">
+                        <h2 class="title-label">Total Statements</h2>
+                        <p class="total-statements-value value">{{ total_statements }}</p>
+                    </div>
+
+                    <div class="executed-statements-container info-container">
+                        <h2 class="title-label">Executed Statements</h2>
+                        <p class="executed-statements-value value">{{ executed_statements }}</p>
+                    </div>
+
+                </div>
+                <div class="flex-2-row">
+                    <div class="total-coverage-container info-container">
+                        <h2 class="title-label">Total Coverage</h2>
+                        <p class="total-coverage-value value">{{ total_coverage}}</p>
+                    </div>
+                    <canvas class="line-chart"></canvas>
+                </div>
+
+                <div class="report-details flex-2-row">
+                    <h2 id="details_section">Detailed Report</h2>
+                    <table class="content-table table-sortable">
+                        <thead>
+                            <th>Archive name</th>
+                            <th class="th-executed">Executed statements</th>
+                            <th class="th-total">Total statements</th>
+                            <th class="th-coverage">Coverade</th>
+                        </thead>
+                        <tbody id="tbody">
+                            
+                        </tbody>
+                    </table>
+                </div>
+
+                <footer>
+                    <p></p>
+                </footer>
+                
+                <div id="modal" class="modal-container">
+                    <div class="modal">
+                        <div class="modal-header">
+                            <div class="file-image">
+                                <img src="{{root_path}}/assets/file_image.png" alt="Imagem de um arquivo">
+                            </div>
+                            <h2 id="modal-file-name">Nome_do_arquivo.py</h2>
+                        </div>
+                        
+                        <button id ="modal-close" class="modal-close">x</button>
+                        
+                        <div class="flex-2-col space-around">
+                            <div class="flex-3-row">
+                                <div class="modal-total-statements-container modal-info-container">
+                                    <h2 class="modal-total-statements-title modal-title">Total Statements</h2>
+                                    <p class="modal-total-statements-value modal-value"></p>
+                                </div>
+
+                                <div class="modal-executed-statements-container modal-info-container">
+                                    <h2 class="modal-executed-statements-title modal-title">Executed Statements</h2>
+                                    <p class="modal-executed-statements-value modal-value"></p>
+                                </div>
+
+                                <div class="modal-coverage-container modal-info-container">
+                                    <h2 class="modal-coverage-title modal-title">Coverage</h2>
+                                    <p class="modal-coverage-value modal-value"></p>
+                                </div>
+                            </div>
+
+                            <canvas class="modal-line-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+        <script>
+            dicionario = {{ dicionario }};
+
+            let tbody = document.getElementById('tbody')
+
+            for(let i in dicionario) {
+                let tr = tbody.insertRow();
+
+                let td_name = tr.insertCell();
+                let td_executed = tr.insertCell();
+                let td_total = tr.insertCell();
+                let td_coverage = tr.insertCell();
+
+                td_name.innerHTML = i
+                td_executed.innerHTML = dicionario[i].executed_statements;
+                td_total.innerHTML = dicionario[i].total_statements;
+                td_coverage.innerHTML =(dicionario[i].coverage*100).toFixed(2)+"%"
+
+                td_executed.classList.add('center')
+                td_total.classList.add('center')
+                td_coverage.classList.add('center')
+
+            };
+     
+            function instantiateGraph(canvas, total, executed){
+                    var data = {
+                            labels: [
+                                'Executed Statements',
+                                'Not Executed Statements',
+                            ],
+                            datasets: [{
+                                label: 'Total Coverage',
+                                data: [executed,total - executed ],
+                                backgroundColor: [
+                                'rgb(54, 162, 235)',
+                                'rgb(255, 99, 132)',
+                            
+                                ],
+                                hoverOffset: 4
+                            }]
+                        };
+                var chartGraph = new Chart(canvas, {type: 'doughnut',data : data});
+            }
+
+            /* Instantiate Main Graph*/
+            const canvas = document.getElementsByClassName("line-chart");
+            var total = document.querySelector('.total-statements-value').innerHTML;
+            var executed = document.querySelector('.executed-statements-value').innerHTML;
+            instantiateGraph(canvas, total, executed);
+            
+            /* Instantiate Modal*/
+            function instantiateModal(modalId, tdValues){
+                
+                const modal = document.getElementById(modalId);
+                const [ archiveName, executedStatements, totalStatements, coverage ] = tdValues;
+                document.getElementById("modal-file-name").innerHTML= archiveName;
+
+                document.getElementsByClassName("modal-total-statements-value")[0].innerHTML= totalStatements;
+                document.getElementsByClassName("modal-executed-statements-value")[0].innerHTML= executedStatements;
+                document.getElementsByClassName("modal-coverage-value")[0].innerHTML= coverage;
+                
+                /* Create Modal Graph*/
+                var data = {
+                            labels: [
+                                'Executed Statements',
+                                'Not Executed Statements',
+                            ],
+                            datasets: [{
+                                label: 'Total Coverage',
+                                data: [executedStatements,totalStatements - executedStatements ],
+                                backgroundColor: [
+                                'rgb(54, 162, 235)',
+                                'rgb(255, 99, 132)',
+                            
+                                ],
+                                hoverOffset: 4
+                            }]
+                        };
+                const modalCanvas = document.getElementsByClassName("modal-line-chart");
+                var modalChartGraph =  new Chart(modalCanvas, {type: 'doughnut',data : data});
+                modal.classList.add("active");
+                modal.addEventListener('click', (e) => {
+                    if (e.target.id == modalId || e.target.id == 'modal-close'){
+                        modalChartGraph.destroy();
+                        modal.classList.remove("active");
+                    }
+                })
+            };
+            // Observer trs //
+            document.querySelectorAll('.content-table td').forEach(headerCell =>{
+             headerCell.addEventListener('click', () =>{
+                const trElement = headerCell.parentElement;
+                var tdValues = []
+                trElement.querySelectorAll('td').forEach(td => tdValues.push(td.textContent.trim()));
+                instantiateModal('modal', tdValues);
+             })
+            });
+             
+        </script>
+        <script src="{{root_path}}/scripts/tablesort.js"></script>           
+    </body>
+</html>
