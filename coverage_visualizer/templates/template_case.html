@@ -6,9 +6,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Coverage Visualizer</title>
 
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" integrity="sha512-8bHTC73gkZ7rZ7vpqUQThUDhqcNFyYi2xgDgPDHc+GXVGHXq+xPjynxIopALmOPqzo9JZj0k6OqqewdGO3EsrQ==" crossorigin="anonymous" />
         <link href="{{root_path}}/styles/normalize.css" rel='stylesheet'>
         <link href="{{root_path}}/styles/case.css" rel='stylesheet'>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" integrity="sha512-8bHTC73gkZ7rZ7vpqUQThUDhqcNFyYi2xgDgPDHc+GXVGHXq+xPjynxIopALmOPqzo9JZj0k6OqqewdGO3EsrQ==" crossorigin="anonymous" />
 
         <script src="https://kit.fontawesome.com/050c362dbf.js" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js" integrity="sha512-dqw6X88iGgZlTsONxZK9ePmJEFrmHwpuMrsUChjAw1mRUhUITE5QU9pkcSox+ynfLhL15Sv2al5A0LVyDCmtUw==" crossorigin="anonymous"></script>
@@ -29,9 +29,10 @@
                 </div>
             </header>
 
-            <h2 id="details_section">Detailed Report</h2>
-            <div class="ui styled accordion" id="outer"></div>
-            
+            <div class ="report-details flex-2-row">
+                <h2 id="details_section">Detailed Report</h2>
+                <div class="ui styled accordion" id="outer"></div>
+            </div>
         </div>
         <script>
             dicionario = {{ dicionario }};
@@ -60,7 +61,7 @@
                     if ( Object.keys(v).length > 0) {
                         var idTbody  = k; 
                         html += `<div class="content"><div class="accordion">
-                            <table>
+                            <table class="content-table table-sortable">
                                 <thead>
                                     <th>Tested file names</th>
                                     <th class="th-executed">Executed statements</th>
@@ -79,7 +80,8 @@
 
                         }
                     html += `</div></div>`
-                    }})
+                    }
+                })
                     html += `</div></div>`
                 })  
                 $("#outer").html(html) 
@@ -118,6 +120,17 @@
                     }})
                 })  
             });
+
+            // OBSERVER TR //
+            document.querySelectorAll('.content-table td').forEach(headerCell =>{
+            headerCell.addEventListener('click', () =>{
+                const trElement = headerCell.parentElement;
+                var tdValues = []
+                trElement.querySelectorAll('td').forEach(td => tdValues.push(td.textContent.trim()));
+                instantiateModal('modal', tdValues);
+             })
+            });
         </script>
+        <script src="{{root_path}}/scripts/tablesort.js"></script>  
     </body>
 </html>

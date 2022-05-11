@@ -202,12 +202,29 @@ header h1{
 
 .modal-close{
     position:absolute;
-    top:4px;
-    right:4px;
+    top:5px;
+    right:5px;
     cursor: pointer;
+
+    margin: 0;
+    border: 0;
+    padding: 0;
+    color: #0BA360;;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    transition: all 150ms;
 }
 .file-image img{
-    width:40px;
+    width:30px;
+}
+
+h2#modal-file-name{
+    font-size: 1.8rem;
 }
 
 .active{
@@ -239,7 +256,7 @@ header h1{
     display:flex;
     align-items: center;
     flex-direction: row;
-    gap:4px;
+    gap:6px;
     margin-left:10px;
 }
 

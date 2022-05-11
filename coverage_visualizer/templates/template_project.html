@@ -72,6 +72,7 @@
                             </div>
                             <h2 id="modal-file-name">Nome_do_arquivo.py</h2>
                         </div>
+                        
                         <button id ="modal-close" class="modal-close">x</button>
                         
                         <div class="flex-2-col space-around">
@@ -188,7 +189,7 @@
                     }
                 })
             };
-            // OBSERVER TR //
+            // Observer trs //
             document.querySelectorAll('.content-table td').forEach(headerCell =>{
              headerCell.addEventListener('click', () =>{
                 const trElement = headerCell.parentElement;
@@ -200,6 +201,5 @@
              
         </script>
         <script src="{{root_path}}/scripts/tablesort.js"></script>           
-        </style>
     </body>
 </html>
