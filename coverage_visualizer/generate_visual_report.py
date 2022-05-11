@@ -25,6 +25,7 @@ class VisualReportGenerator:
 
         file.write(render)
         file.close()
+        
 
     @staticmethod
     def generate_visual_report_per_testfile(final_report):

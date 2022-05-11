@@ -6,7 +6,7 @@ from xml.dom import minidom
 
 
 
-TEST_DIRECTORY = os.getcwd() + "\\intro-to-pytest"
+TEST_DIRECTORY = os.getcwd() + "\\project_test"
 
 def run_pytest(optional_args=None, timeout=30):
     optional_args = optional_args or []
@@ -23,30 +23,30 @@ def extract_pytest_results_coverage_visualizer(pytest_output):
         if "Total Coverage" in l:
             return float(l.split(" ")[-1][:-1]) 
 
-def run_pycov(test_dir):
+def run_pycov():
     cov = Coverage()
     cov.start()
-    pytest.main(['-x', (os.getcwd() + "\\intro-to-pytest\\" + test_dir), '-vv', ])
+    pytest.main([(os.getcwd() + "\\project_test\\"), ])
     cov.stop()
     cov.xml_report()
-    
-    mydoc = minidom.parse('coverage.xml')
-    classes = mydoc.getElementsByTagName('class')
-    for element in classes:
-        if element.getAttribute('name') == "services.py":
-            coverage = element
-    return int(float(coverage.attributes['line-rate'].value)*100)
+    return get_coverage()
 
-def run_pycov_fixtures():
+def run_pycov_fixtures(test_name):
     cov = Coverage()
     cov.start()
-    pytest.main(['-x', (os.getcwd() + "\\intro-to-pytest"), '-vv', ])
+    pytest.main([(os.getcwd() + "\\project_test\\tests\\" + test_name ), ])
     cov.stop()
     cov.xml_report()
-    
+    return get_coverage()
+
+def get_coverage():
     mydoc = minidom.parse('coverage.xml')
-    classes = mydoc.getElementsByTagName('class')
+    classes = mydoc.getElementsByTagName('package')
     for element in classes:
-        if element.getAttribute('name') == "services.py":
+        if element.getAttribute('name') == "project_test.services":
             coverage = element
-    return int(float(coverage.attributes['line-rate'].value)*100)
+            return int(float(coverage.attributes['line-rate'].value)*100)
+    return False
+
+def is_there_path(path):
+    return os.path.exists(path)
